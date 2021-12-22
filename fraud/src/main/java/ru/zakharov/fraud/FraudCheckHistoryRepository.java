@@ -1,0 +1,6 @@
+package ru.zakharov.fraud;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface FraudCheckHistoryRepository extends JpaRepository<FraudCheckHistory, Integer> {
+}
