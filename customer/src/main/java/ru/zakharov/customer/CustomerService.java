@@ -5,13 +5,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import ru.zakharov.clients.fraud.FraudCheckResponse;
 import ru.zakharov.clients.fraud.FraudClient;
+import ru.zakharov.clients.notification.NotificationClient;
+import ru.zakharov.clients.notification.NotificationRequest;
 
 @Service
 @AllArgsConstructor
 public class CustomerService {
 
     private final CustomerRepository customerRepository;
-    private final RestTemplate restTemplate;
+    private final NotificationClient notificationClient;
     private final FraudClient fraudClient;
 
     public void registerCustomer(CustomerRegistrationRequest request) {
@@ -27,6 +29,14 @@ public class CustomerService {
         if (fraudCheckResponse.isFraudster()) {
             throw new IllegalStateException("fraudster");
         }
+
+        notificationClient.sendNotification(
+                new NotificationRequest(
+                        customer.getId(),
+                        customer.getEmail(),
+                        String.format("Hi %s, welcome to Amigoscode...", customer.getFirstName())
+                )
+        );
     }
 
 }
