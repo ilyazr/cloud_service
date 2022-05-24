@@ -7,7 +7,10 @@ services:
       POSTGRES_PASSWORD: password
       PGDATA: /data/postgres
     volumes:
-      - postgres:/data/postgres
+#     create persistent storage for db's data on your disk
+#      - postgres:/data/postgres
+#     execute init.sql script on startup (only when there is no data at all)
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     ports:
       - "5432:5432"
     networks:
@@ -44,6 +47,8 @@ services:
     ports:
       - "5672:5672"
       - "15672:15672"
+    networks:
+      - spring
 
   eureka-server:
     image: ilya1zr/eureka-server:latest
@@ -81,9 +86,11 @@ services:
       - spring
       - postgres
     depends_on:
+      - postgres
       - zipkin
       - eureka-server
       - apigw
+      - rabbitmq
 
   fraud:
     image: ilya1zr/fraud:latest
@@ -96,9 +103,11 @@ services:
       - spring
       - postgres
     depends_on:
+      - postgres
       - zipkin
       - eureka-server
       - apigw
+      - rabbitmq
 
   notification:
     image: ilya1zr/notification:latest
@@ -111,9 +120,11 @@ services:
       - spring
       - postgres
     depends_on:
+      - postgres
       - zipkin
       - eureka-server
       - apigw
+      - rabbitmq
 
 networks:
   postgres:

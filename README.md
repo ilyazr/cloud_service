@@ -1,3 +1,6 @@
+## Info
+- If you need new database, it should be listed in init.sql
+
 ## Useful commands
 
 1. `mvn clean package -P <profile_name>` - clean and push to remote docker hub (because of jib)
