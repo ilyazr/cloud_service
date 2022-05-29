@@ -18,3 +18,4 @@ minikube delete
 minikube start
 ```
 5. Get address of service - `minikube service --url <service_name>`
+6. Get deployment yml - `kubectl get deployment <depl_name> -o yaml`
